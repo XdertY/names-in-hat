@@ -1,35 +1,35 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-let names = ["Асен", 'Никол', 'Стефчо', 'Тони', 'Алекс'];
-let players = [0, 0, 0, 0, 0];
 
 const url = require("url")
+const fs = require('fs');
 
 
 export default (req, res) => {
+  let rawdata = fs.readFileSync('pages/api/db.json');
+  let data = JSON.parse(rawdata);
+ 
+  console.log(data.names);
   const yourNameKey = url.parse(req.url,true).query.name;
-  if(players[parseInt(yourNameKey) - 1] === 1) {
+  if(data.players[parseInt(yourNameKey) - 1] === 1) {
     res.statusCode = 200;
     res.json({name: "Вече си теглил"});
   }
   else {
     let yourName = "";
     switch(yourNameKey) {
-      case '1' : yourName = "Асен"; players[0] = 1; break;
-      case '2' : yourName = "Никол"; players[1] = 1; break;
-      case '3' : yourName = "Стефчо"; players[2] = 1 ;break;
-      case '4' : yourName = "Тони"; players[3] = 1 ;break;
-      case '5' : yourName = "Алекс"; players[4] = 1; break;
+      case '1' : yourName = "Асен"; data.players[0] = 1; break;
+      case '2' : yourName = "Никол"; data.players[1] = 1; break;
+      case '3' : yourName = "Стефчо"; data.players[2] = 1 ;break;
+      case '4' : yourName = "Тони"; data.players[3] = 1 ;break;
+      case '5' : yourName = "Алекс"; data.players[4] = 1; break;
 
     }
-    let currNames = names.map(el => {
-      if(el !== yourName) return el;
-    })
-    const index = Math.floor(Math.random()*4);
+    let currNames = data.names.filter(el => el !== yourName)
+    const index = Math.floor(Math.random()*currNames.length);
     const name  = currNames[index];
-    names = names.map(el => {
-      if(el !== name) return el;
-    })
-    names.splice(index, 1);
+    data.names = data.names.filter(el => el !== name)
+    console.log(data.names);
+    fs.writeFile('pages/api/db.json', JSON.stringify(data), (err) => console.log(err));
     res.statusCode = 200;
     res.json({ name });
   } 
