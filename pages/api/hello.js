@@ -5,7 +5,7 @@ const fs = require('fs');
 const { join } = require('path');
 
 export default (req, res) => {
-  let rawdata = fs.readFileSync(join(__dirname, 'db.json'));
+  let rawdata = fs.readFileSync('public/db/db.json');
   let data = JSON.parse(rawdata);
  
   console.log(data.names);
@@ -29,7 +29,7 @@ export default (req, res) => {
     const name  = currNames[index];
     data.names = data.names.filter(el => el !== name)
     console.log(data.names);
-    fs.writeFileSync(join(__dirname, 'db.json'), JSON.stringify(data), (err) => console.log(err));
+    fs.writeFileSync("public/db/db.json", JSON.stringify(data), (err) => console.log(err));
     res.statusCode = 200;
     res.json({ name });
   } 
