@@ -20,7 +20,7 @@ const Card = (props) => {
     const handleGenerate = () => {
         document.getElementById("card").classList.toggle(classes.theCardActive);
         setTimeout(() => {
-            fetch(`https://localhost:3000/api/hello?name=${yourName.label}`).then(response => response.json())
+            fetch(`https://names-in-hat-e2neb163h.vercel.app/api/hello?name=${yourName.label}`).then(response => response.json())
             .then(data => {
                 setDisableButton(true);
                 setName(data.name)
