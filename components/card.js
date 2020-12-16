@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import classes from '../styles/Card.module.css'
 import { Dropdown } from 'primereact/dropdown'
+import axios from 'axios'
 
 
 const Card = (props) => {
@@ -21,13 +22,10 @@ const Card = (props) => {
         setDisableButton(true);
         document.getElementById("card").classList.toggle(classes.theCardActive);
         setTimeout(() => {
-            const url = "https://names-in-hat.vercel.app"
-            // const url = "http://localhost:3000"
-            fetch(`${url}/api/hello?name=${yourName.key}`).then(response => response.json())
-            .then(data => {
-                setName(data.name)
-            });
-        }, 8000)
+            // const url = "https://names-in-hat.vercel.app"
+            const url = `http://localhost:3000/api/hello?name=${yourName.key}`;
+            axios.get(url).then(response =>setName(response.data.name.name)).catch(err => console.log(err))
+        }, 1)
         
        
 
