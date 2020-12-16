@@ -32,6 +32,5 @@ export default (req, res) => {
     names.splice(index, 1);
     res.statusCode = 200;
     res.json({ name });
-    console.log(index, names);
   } 
 }
