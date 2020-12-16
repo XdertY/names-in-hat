@@ -21,8 +21,8 @@ const Card = (props) => {
         setDisableButton(true);
         document.getElementById("card").classList.toggle(classes.theCardActive);
         setTimeout(() => {
-            // const url = "https://names-in-hat.vercel.app"
-            const url = "http://localhost:3000"
+            const url = "https://names-in-hat.vercel.app"
+            // const url = "http://localhost:3000"
             fetch(`${url}/api/hello?name=${yourName.key}`).then(response => response.json())
             .then(data => {
                 setName(data.name)
