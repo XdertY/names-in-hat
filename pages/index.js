@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div >
       <Head>
-        <title>Create Next App</title>
+        <title>Names in hat</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
