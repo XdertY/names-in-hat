@@ -25,7 +25,7 @@ const Card = (props) => {
             const url = `https://names-in-hat.vercel.app/api/hello?name=${yourName.key}`
             // const url = `http://localhost:3000/api/hello?name=${yourName.key}`;
             axios.get(url).then(response =>setName(response.data.name.name)).catch(err => console.log(err))
-        }, 1)
+        }, 8000)
         
        
 
