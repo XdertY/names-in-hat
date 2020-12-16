@@ -6,7 +6,7 @@ const { join } = require('path');
 const dir = __dirname;
 
 export default (req, res) => {
-  let rawdata = fs.readFileSync("./_files/db.json");
+  let rawdata = fs.readFileSync("/var/task/.next/serverless/pages/api/_files/db.json");
   let data = JSON.parse(rawdata);
  
   console.log(data.names);
@@ -30,7 +30,7 @@ export default (req, res) => {
     const name  = currNames[index];
     data.names = data.names.filter(el => el !== name)
     console.log(data.names);
-    fs.writeFileSync("./_files/db.json", JSON.stringify(data), (err) => console.log(err));
+    fs.writeFileSync("./var/task/.next/serverless/pages/api/_files/db.json", JSON.stringify(data), (err) => console.log(err));
     res.statusCode = 200;
     res.json({ name });
   } 
