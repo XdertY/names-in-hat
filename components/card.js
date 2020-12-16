@@ -20,7 +20,7 @@ const Card = (props) => {
     const handleGenerate = () => {
         document.getElementById("card").classList.toggle(classes.theCardActive);
         setTimeout(() => {
-            const url = "https://names-in-hat-e2neb163h.vercel.app"
+            const url = "https://names-in-hat.vercel.app"
             // const url = "http://localhost:3000"
             fetch(`${url}/api/hello?name=${yourName.key}`).then(response => response.json())
             .then(data => {
