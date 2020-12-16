@@ -24,6 +24,6 @@ export default (req, res) => {
   })
   names.splice(index, 1);
   res.statusCode = 200;
-  res.json({ name });
+  res.json({ test: 123 });
   console.log(index, names);
 }
