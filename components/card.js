@@ -10,17 +10,19 @@ const Card = (props) => {
     const [yourName, setYourName] = useState("");
 
     const names = [
-        {label: "Алекс", key: 1},
+        {label: "Асен", key: 1},
         {label: "Никол", key: 2},
-        {label: "Асен", key: 3},
-        {label: "Стефчо", key: 4},
-        {label: "Тони", key: 5}
+        {label: "Стефчо", key: 3},
+        {label: "Тони", key: 4},
+        {label: "Алекс", key: 5}
     ]
 
     const handleGenerate = () => {
         document.getElementById("card").classList.toggle(classes.theCardActive);
         setTimeout(() => {
-            fetch(`https://names-in-hat-e2neb163h.vercel.app/api/hello?name=${yourName.label}`).then(response => response.json())
+            const url = "https://names-in-hat-e2neb163h.vercel.app"
+            // const url = "http://localhost:3000"
+            fetch(`${url}/api/hello?name=${yourName.key}`).then(response => response.json())
             .then(data => {
                 setDisableButton(true);
                 setName(data.name)
