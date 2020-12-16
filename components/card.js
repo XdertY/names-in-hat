@@ -25,7 +25,7 @@ const Card = (props) => {
                 setDisableButton(true);
                 setName(data.name)
             });
-        }, 10000)
+        }, 8000)
         
        
 
