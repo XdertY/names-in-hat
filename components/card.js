@@ -1,34 +1,47 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import classes from '../styles/Card.module.css'
 import { Dropdown } from 'primereact/dropdown'
+import { getFirestore, collection, getDocs, updateDoc, doc ,setDoc } from 'firebase/firestore';
+import { firebase } from '../firebase/clientApp'
 import axios from 'axios'
 
 
 const Card = (props) => {
-// {/* <input placeholder="Напиши твоето име" value={yourName} onChange={(e) => setYourName(e.target.value)}></input> */}
     const [name, setName] = useState("");
     const [disableButton, setDisableButton] = useState(false);
     const [yourName, setYourName] = useState("");
+    const [names, setNames] = useState([]);
+    const db = getFirestore(firebase);
 
-    const names = [
-        {label: "Асен", key: 1},
-        {label: "Никол", key: 2},
-        {label: "Стефчо", key: 3},
-        {label: "Тони", key: 4},
-        {label: "Алекс", key: 5}
-    ]
+    useEffect(() => {
+        getNames(db);
+    }, [])
 
-    const handleGenerate = () => {
-        setDisableButton(true);
+    const getNames = async (db)  =>  {
+        const namesCol = collection(db, 'names');
+        const namesSnapshot = await getDocs(namesCol);
+        const namesList = namesSnapshot.docs.map(doc => doc.data());
+        setNames(namesList[0].from.map((el, index) => {
+            return {key: index, label: el}
+        }));
+    }
+
+    const handleGenerate = async () => {
         document.getElementById("card").classList.toggle(classes.theCardActive);
-        setTimeout(() => {
-            const url = `https://names-in-hat.vercel.app/api/hello?name=${yourName.key}`
-            // const url = `http://localhost:3000/api/hello?name=${yourName.key}`;
-            axios.get(url).then(response =>setName(response.data.name.name)).catch(err => console.log(err))
-        }, 8000)
-        
-       
 
+        const namesCol = collection(db, 'names');
+        const namesSnapshot = await getDocs(namesCol);
+        const namesList = namesSnapshot.docs.map(doc => doc.data());
+        const toNames = namesList[0].to.filter(el => el !== yourName.label);
+
+        const namesDocRef = doc(db, "names/0fhAXTFmr6Y5HgN23grA");
+        const randomName = toNames[Math.floor(Math.random()*toNames.length)];
+
+        await setDoc(namesDocRef, {from: ['Алекс Б.', 'Алекс П.', 'Асен', 'Стефчо', 'Тони', 'Никол'], to:  namesList[0].to.filter(el => el !== randomName)});
+        setDisableButton(true);
+        setTimeout(() => {
+            setName(randomName);
+        }, 8000)
     }
 
     return (
@@ -47,9 +60,9 @@ const Card = (props) => {
 
 
             <div className={classes.buttonHolder}>
-                <Dropdown value={yourName} style={{width: "100%"}} placeholder="Избери името си" options={names} onChange={(e) => setYourName(e.value)}/>
-                
-                <button disabled={disableButton} className={classes.button} onClick={() => handleGenerate()}>Генерирай име</button>
+                <Dropdown value={yourName} style={{width: "100%"}} placeholder="Избери името си" options={names} onChange={(e) => setYourName(e.value)} disabled={names.length <= 0}/>
+
+                <button disabled={yourName === "" || disableButton} className={classes.button} onClick={() => handleGenerate()}>Генерирай име</button>
             </div>
         </>
     )
